@@ -1,7 +1,9 @@
 let productsHTML = '';
+let cart = []
+
 
 products.forEach((product) => {
-    productsHTML += `
+  productsHTML += `
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -46,7 +48,7 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name="${product.name}" data-product-id="data-product-id=${product.id}">
             Add to Cart
           </button>
         </div>
@@ -54,6 +56,56 @@ products.forEach((product) => {
 
 })
 
-console.log(productsHTML);
+//console.log(productsHTML);
 
 document.querySelector('.products-grid').innerHTML = productsHTML;
+
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+
+  button.addEventListener('click', () => {
+
+    const productId = button.dataset.productId; // in dataset, all the data-"" attributes are taken, and converted from 'kebab-case' to 'camelCase'
+
+    let matchingItem;
+    cart.forEach((item) => {
+      if(productId === item.productId){
+        matchingItem = item;
+      }
+    })
+
+    if(matchingItem){
+      matchingItem.quantity += 1;
+    }
+    else{
+
+      cart.push({
+        productId: productId,
+        quantity: 1
+      });
+    }
+
+    console.log(cart);
+
+  });
+});
+
+
+    /*
+      ALTERNATIVE CODE FOR CHECKING THE EXISITING ITEM
+    const productId = button.dataset.productId;
+
+    const productIndex = cart.findIndex((item) => {
+      return item.productId === productId;
+    })
+
+    if (productIndex === -1){
+      cart.push(
+        {
+          productId: productId,
+          quantity: 1
+        });
+    }
+    else{
+      cart[productIndex].quantity += 1;
+    }
+    console.log(cart)*/
