@@ -1,9 +1,11 @@
-import { cart, addToCart } from '../data/cart.js';
+import { cart, addToCart, calculateCartQty } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 let productsHTML = '';
 
 // fyi, import * as <name> from <module_location>, then can use <name>.func(); -- 
+
+
 
 products.forEach((product) => {
   productsHTML += `
@@ -63,17 +65,9 @@ document.querySelector('.products-grid').innerHTML = productsHTML;
 
 //console.log(productsHTML);
 
-function updateCartQty(){
 
-    let cartQuantity = 0;
-    cart.forEach((cartItem) => {
-      cartQuantity += cartItem.quantity;
-    })
-    console.log(cart);
-    console.log(cartQuantity);
-    document.querySelector('.cart-quantity').innerHTML = cartQuantity;
-}
-
+let cartQuantity = calculateCartQty();
+document.querySelector('.cart-quantity').innerHTML = cartQuantity;
 
 
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
@@ -100,7 +94,8 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     */
     
     addToCart(productId); // Adds products to the cart
-    updateCartQty(); // Updates the cart quantity
+    cartQuantity = calculateCartQty(); // Updates the cart quantity
+    document.querySelector('.js-cart-qty').innerHTML = cartQuantity;
   });
 });
 
