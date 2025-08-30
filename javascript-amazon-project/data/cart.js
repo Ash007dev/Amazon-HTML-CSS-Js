@@ -1,5 +1,6 @@
 export const cart = [];
 
+
 export function addToCart(productId){
 
     let matchingCartItem;
