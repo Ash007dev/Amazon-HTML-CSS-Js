@@ -1,6 +1,8 @@
-import {cart} from '../data/cart.js';
-import {products} from '../data/products.js';
+import { cart, addToCart } from '../data/cart.js';
+import { products } from '../data/products.js';
 let productsHTML = '';
+
+// fyi, import * as <name> from <module_location>, then can use <name>.func(); -- 
 
 products.forEach((product) => {
   productsHTML += `
@@ -56,87 +58,58 @@ products.forEach((product) => {
 
 })
 
+document.querySelector('.products-grid').innerHTML = productsHTML;
+
 //console.log(productsHTML);
 
-document.querySelector('.products-grid').innerHTML = productsHTML;
+function updateCartQty(){
+
+    let cartQuantity = 0;
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
+    })
+    console.log(cart);
+    console.log(cartQuantity);
+    document.querySelector('.cart-quantity').innerHTML = cartQuantity;
+}
+
 
 
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
 
   let addedMessageTimeoutId;
-
   button.addEventListener('click', () => {
-
     const productId = button.dataset.productId; // in dataset, all the data-"" attributes are taken, and converted from 'kebab-case' to 'camelCase'
 
-    /*
-    
-    ALTERNATE WAY FOR ADDED TO CART DISPLAY MSG
+    let addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+    addedToCart.classList.add("added-to-cart-visible");
 
+    clearTimeout(addedMessageTimeoutId); // Basically reload the display time, each time user clicks the button
+    addedMessageTimeoutId = setTimeout(() => {
+      addedToCart.classList.remove('added-to-cart-visible');  
+    }, 2000);
+
+    /*
+    ALTERNATE WAY FOR ADDED TO CART DISPLAY MSG
     const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
     addedToCart.style.opacity = 1;
     setTimeout(() => {
       addedToCart.style.opacity = 0;
     }, 2000);
-
     */
     
-
-    let addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
-    addedToCart.classList.add("added-to-cart-visible");
-
-    clearTimeout(addedMessageTimeoutId);
-    
-    addedMessageTimeoutId = setTimeout(() => {
-      addedToCart.classList.remove('added-to-cart-visible');  
-    }, 2000);
-     
-
-
-    //clearTimeout(displaytimeout);
-    
-
-
-    let matchingItem;
-    cart.forEach((item) => {
-      if(productId === item.productId){
-        matchingItem = item;
-      }
-    });
-
-    const dropDownQty = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
-
-    if(matchingItem){
-      matchingItem.quantity += dropDownQty;
-    }
-    else{
-
-      cart.push({
-        productId: productId,
-        quantity: dropDownQty
-      });
-    }
-
-    let cartQuantity = 0;
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    })
-
-    console.log(cart);
-    console.log(cartQuantity);
-
-    document.querySelector('.cart-quantity').innerHTML = cartQuantity;
-  
+    addToCart(productId); // Adds products to the cart
+    updateCartQty(); // Updates the cart quantity
   });
 });
 
 
     /*
-      ALTERNATIVE CODE FOR CHECKING THE EXISITING ITEM
+      ALTERNATIVE CODE FOR CHECKING THE EXISITING cartITEM
     const productId = button.dataset.productId;
 
-    const productIndex = cart.findIndex((item) => {
-      return item.productId === productId;
+    const productIndex = cart.findIndex((cartItem) => {
+      return cartItem.productId === productId;
     })
 
     if (productIndex === -1){
