@@ -43,7 +43,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -67,6 +67,28 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
 
     const productId = button.dataset.productId; // in dataset, all the data-"" attributes are taken, and converted from 'kebab-case' to 'camelCase'
+
+    /*
+    
+    ALTERNATE WAY FOR ADDED TO CART DISPLAY MSG
+
+    const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+    addedToCart.style.opacity = 1;
+    setTimeout(() => {
+      addedToCart.style.opacity = 0;
+    }, 2000);
+
+    */
+    
+
+    const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+    addedToCart.classList.add("added-to-cart-visible");
+    
+    setTimeout(() => {
+      addedToCart.classList.remove('added-to-cart-visible');
+    }, 2000);
+    
+
 
     let matchingItem;
     cart.forEach((item) => {
