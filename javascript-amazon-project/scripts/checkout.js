@@ -4,11 +4,9 @@ import { formatCurrency } from "./utils/money.js";
 
 
 let cartSummaryHTML = "";
-
-
-
 let cartQty = calculateCartQty();
-document.querySelector('.js-checkout-qty').innerHTML = cartQty;
+updateCartQuantity();
+
 
 cart.forEach((cartItem) => {
 
@@ -111,8 +109,7 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
     link.addEventListener('click', () => {
         const productId = link.dataset.productId;
         removeFromCart(productId);
-        cartQty = calculateCartQty();
-        document.querySelector('.js-checkout-qty').innerHTML = cartQty;
+        updateCartQuantity();
         const container = document.querySelector(`.js-cart-item-container-${productId}`)
 
         console.log(container);
@@ -120,6 +117,11 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
         console.log(cart);
     });
 });
+
+function updateCartQuantity(){
+    cartQty = calculateCartQty();
+    document.querySelector('.js-checkout-qty').innerHTML = cartQty;
+};
 
 document.querySelectorAll('.js-update-link')
   .forEach((link) => {
@@ -155,11 +157,7 @@ document.querySelectorAll('.js-save-link')
             );
             quantityLabel.innerHTML = newQuantity;
 
-
-            cartQty = calculateCartQty();
-            document.querySelector('.js-checkout-qty').innerHTML = cartQty;
-
-
+            updateCartQuantity();
         });
     });
 
