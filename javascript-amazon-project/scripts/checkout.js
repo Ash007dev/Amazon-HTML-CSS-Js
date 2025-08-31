@@ -1,6 +1,20 @@
 import { cart, removeFromCart, calculateCartQty, updateQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
+import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
+import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
+
+
+hello();
+
+const today = dayjs();
+const freeDeliveryDate = today.add(9, 'days');
+const threeDayDeliveryDate = today.add(3, 'days');
+const oneDayDeliveryDate = today.add(1, 'day');
+
+function formatDate(date){
+    return date.format('dddd, MMMM DD');
+}
 
 
 let cartSummaryHTML = "";
@@ -23,8 +37,8 @@ cart.forEach((cartItem) => {
 
     cartSummaryHTML += `
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
-        <div class="delivery-date">
-            Delivery date: Tuesday, June 21
+        <div class="delivery-date js-delivery-date-${matchingProduct.id}" data-product-id=${matchingProduct.id}>
+            
         </div>
 
         <div class="cart-item-details-grid">
@@ -62,8 +76,8 @@ cart.forEach((cartItem) => {
                 class="delivery-option-input"
                 name="delivery-option-${matchingProduct.id}">
                 <div>
-                <div class="delivery-option-date">
-                    Tuesday, June 21
+                <div class="delivery-option-date js-option-1">
+                    
                 </div>
                 <div class="delivery-option-price">
                     FREE Shipping
@@ -75,8 +89,8 @@ cart.forEach((cartItem) => {
                 class="delivery-option-input"
                 name="delivery-option-${matchingProduct.id}">
                 <div>
-                <div class="delivery-option-date">
-                    Wednesday, June 15
+                <div class="delivery-option-date js-option-2">
+                    
                 </div>
                 <div class="delivery-option-price">
                     $4.99 - Shipping
@@ -88,8 +102,8 @@ cart.forEach((cartItem) => {
                 class="delivery-option-input"
                 name="delivery-option-${matchingProduct.id}">
                 <div>
-                <div class="delivery-option-date">
-                    Monday, June 13
+                <div class="delivery-option-date js-option-3">
+                    
                 </div>
                 <div class="delivery-option-price">
                     $9.99 - Shipping
@@ -102,7 +116,31 @@ cart.forEach((cartItem) => {
     `;
 });
 
+
 document.querySelector(".order-summary").innerHTML = cartSummaryHTML;
+
+const deliveryOptionFree = document.querySelectorAll('.js-option-1');
+const deliveryOptionThreeDays = document.querySelectorAll('.js-option-2');
+const deliveryOptionOneDay = document.querySelectorAll('.js-option-3');
+const deliveryDate = document.querySelectorAll('.delivery-date');
+
+deliveryDate.forEach((date) => {
+    const productId = date.dataset.productId;
+    const productDeliveryDate = document.querySelector(`.js-delivery-date-${productId}`);
+    productDeliveryDate.innerHTML = `Delivery Date: ${formatDate(freeDeliveryDate)}`;
+});
+
+deliveryOptionFree.forEach((opt1) => {
+    opt1.innerHTML = formatDate(freeDeliveryDate);
+});
+
+deliveryOptionThreeDays.forEach((opt2) => {
+    opt2.innerHTML = formatDate(threeDayDeliveryDate);
+});
+
+deliveryOptionOneDay.forEach((opt3) => {
+    opt3.innerHTML = formatDate(oneDayDeliveryDate);
+});
 
 
 document.querySelectorAll('.delete-quantity-link').forEach((link) => {
