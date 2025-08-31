@@ -111,9 +111,9 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
         removeFromCart(productId);
         updateCartQuantity();
         const container = document.querySelector(`.js-cart-item-container-${productId}`)
+        container.remove();
 
         console.log(container);
-        container.remove();
         console.log(cart);
     });
 });
@@ -128,9 +128,7 @@ document.querySelectorAll('.js-update-link')
     link.addEventListener('click', () => {
       const productId = link.dataset.productId;
 
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`
-      );
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
       container.classList.add('is-editing-quantity');
     });
   });
@@ -140,17 +138,20 @@ document.querySelectorAll('.js-save-link')
         link.addEventListener('click', () => {
             const productId = link.dataset.productId;
 
-            const container = document.querySelector(
-                `.js-cart-item-container-${productId}`
+            const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
+            const newQuantity = Number(quantityInput.value);
+
+            if (newQuantity < 0 || newQuantity >= 1000){
+                alert("-Quantity must be greater than 0 and less than 1000-");
+                return;
+            };
+
+            updateQuantity(productId, newQuantity);
+
+            const container = document.querySelector( 
+            `.js-cart-item-container-${productId}`
             );
             container.classList.remove('is-editing-quantity');
-
-
-            const quantityInput = document.querySelector(
-                `.js-quantity-input-${productId}`
-            );
-            const newQuantity = Number(quantityInput.value);
-            updateQuantity(productId, newQuantity);
 
             const quantityLabel = document.querySelector(
                 `.js-quantity-label-${productId}`
