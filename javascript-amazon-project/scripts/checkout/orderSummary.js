@@ -5,7 +5,7 @@ import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 import { updateDeliveryOption } from "../../data/cart.js";
-
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 hello();
 
@@ -62,7 +62,7 @@ export function renderOrderSummary(){
                     </span>
                     <input class="quantity-input js-quantity-input-${matchingProduct.id}">
                     <span class="save-quantity-link link-primary js-save-link" data-product-id=${matchingProduct.id}>Save</span>
-                    <span class="delete-quantity-link link-primary" data-product-id=${matchingProduct.id}>
+                    <span class="delete-quantity-link link-primary js-delete-link" data-product-id=${matchingProduct.id}>
                     Delete
                     </span>
                 </div>
@@ -120,13 +120,15 @@ export function renderOrderSummary(){
     document.querySelector(".order-summary").innerHTML = cartSummaryHTML;
 
 
-    document.querySelectorAll('.delete-quantity-link').forEach((link) => {
+    document.querySelectorAll('.js-delete-link').forEach((link) => {
         link.addEventListener('click', () => {
             const productId = link.dataset.productId;
             removeFromCart(productId);
             updateCartQuantity();
             const container = document.querySelector(`.js-cart-item-container-${productId}`)
             container.remove();
+
+            renderPaymentSummary();
 
             console.log(container);
             console.log(cart);
@@ -142,7 +144,6 @@ export function renderOrderSummary(){
         .forEach((link) => {
             link.addEventListener('click', () => {
                 const productId = link.dataset.productId;
-
                 const container = document.querySelector(`.js-cart-item-container-${productId}`);
                 container.classList.add('is-editing-quantity');
             });
@@ -174,8 +175,10 @@ export function renderOrderSummary(){
                 quantityLabel.innerHTML = newQuantity;
 
                 updateCartQuantity();
+                renderPaymentSummary();
             });
         });
+
 
 
     document.querySelectorAll('.js-delivery-option').forEach((elem) => {
@@ -183,6 +186,7 @@ export function renderOrderSummary(){
             const {productId, deliveryOptionId} = elem.dataset;
             updateDeliveryOption(productId, deliveryOptionId);
             renderOrderSummary();
+            renderPaymentSummary();
         })
     });
 
