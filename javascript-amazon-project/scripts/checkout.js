@@ -33,10 +33,25 @@ cart.forEach((cartItem) => {
 
     console.log(matchingProduct);
 
+
+    const deliveryOptionId = cartItem.deliveryOptionId;
+
+    let deliveryOption;
+
+    deliveryOptions.forEach((option) => {
+        if (option.id == deliveryOptionId){
+            deliveryOption = option;
+        }
+    });
+
+    const today = dayjs();
+    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+    const dateString = deliveryDate.format('dddd, MMMM DD');
+
     cartSummaryHTML += `
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
         <div class="delivery-date js-delivery-date-${matchingProduct.id}" data-product-id=${matchingProduct.id}>
-            
+            Delivery Date: ${dateString}
         </div>
 
         <div class="cart-item-details-grid">
