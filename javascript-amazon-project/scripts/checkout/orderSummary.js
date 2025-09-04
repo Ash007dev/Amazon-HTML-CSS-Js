@@ -6,6 +6,7 @@ import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 import { updateDeliveryOption } from "../../data/cart.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 hello();
 
@@ -129,6 +130,7 @@ export function renderOrderSummary(){
             //container.remove();
             renderOrderSummary();
             renderPaymentSummary();
+            renderCheckoutHeader();
 
             //console.log(container);
             console.log(cart);
