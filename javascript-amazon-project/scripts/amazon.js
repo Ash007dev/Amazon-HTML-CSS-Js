@@ -66,7 +66,7 @@ document.querySelector('.products-grid').innerHTML = productsHTML;
 //console.log(productsHTML);
 
 
-let cartQuantity = calculateCartQty();
+let cartQuantity = calculateCartQty();  
 document.querySelector('.cart-quantity').innerHTML = cartQuantity;
 
 
@@ -76,7 +76,11 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId; // in dataset, all the data-"" attributes are taken, and converted from 'kebab-case' to 'camelCase'
 
+    const dropDownQty = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
+
     let addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+
+
     addedToCart.classList.add("added-to-cart-visible");
 
     clearTimeout(addedMessageTimeoutId); // Basically reload the display time, each time user clicks the button
@@ -93,7 +97,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     }, 2000);
     */
     
-    addToCart(productId); // Adds products to the cart
+    addToCart(productId, dropDownQty); // Adds products to the cart
     cartQuantity = calculateCartQty(); // Updates the cart quantity
     document.querySelector('.js-cart-qty').innerHTML = cartQuantity;
   });
