@@ -1,6 +1,6 @@
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
 import { cart, loadFromStorage } from "../../data/cart.js";
-import { loadProducts } from "../../data/products.js";
+import { loadProducts, loadProductsFetch } from "../../data/products.js";
 
 describe('Test suite: renderOrderSummary', () => {
 
@@ -8,8 +8,8 @@ describe('Test suite: renderOrderSummary', () => {
     const productId2 = "15b6fc6f-327a-4ec4-896f-486349e85a3d";
 
     beforeAll((done) => { // done is used, to basically finish whatever beforeAll needs to do, and then go to next code
-        loadProducts(() => {
-            done(); // we load the products first, and after its 'done', we go to next html in our page
+        loadProductsFetch().then(() => {
+            done();  // we load the products first, and after its 'done', we go to next html in our page
         });
     });
 
