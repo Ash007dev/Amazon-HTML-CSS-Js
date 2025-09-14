@@ -712,6 +712,7 @@ export function loadProductsFetch(){
     return response.json();
   }).then((productsData) => {
     products = productsData;
+    console.log('load products');
   });
   return promise;
 }
