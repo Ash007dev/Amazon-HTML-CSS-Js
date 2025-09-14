@@ -2,7 +2,6 @@ import { calculateCartQty } from "../../data/cart.js";
 
 
 export function renderCheckoutHeader(){
-    console.log("Checkout header");
     const checkoutHeaderHTML = 
     `
     <div class="checkout-header">
