@@ -713,9 +713,12 @@ export function loadProductsFetch(){
   }).then((productsData) => {
     products = productsData;
     console.log('load products');
+  }).catch(() => {
+    console.log('Unexpected error. Please try again later.');
   });
   return promise;
 }
+
 /*
 loadProductsFetch().then(() => {
   console.log('Next step');
@@ -729,6 +732,10 @@ export function loadProducts(fun) {
     console.log("Load Products");
 
     fun(); // callback function, to call in the future is its meaning
+  });
+
+  xhr.addEventListener('error', () => {
+    console.log('Unexpected error, please try again later.');
   });
 
 
